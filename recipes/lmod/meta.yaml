@@ -1,0 +1,55 @@
+# Note: there are many handy hints in comments in this example -- remove them when you've finalized your recipe
+
+# Jinja variables help maintain the recipe as you'll update the version only here.
+{% set name = "lmod" %}
+{% set version = "7.1.11" %}
+{% set sha256 = "e61f4b5ef48d4034f26f4a6415b847795894a75d93e56a2c67aa63076b402f58" %}
+# sha256 is the prefered checksum -- you can get it for a file with:
+#  `openssl sha256 <file name>`.
+# You may need the openssl package, available on conda-forge
+#  `conda install openssl -c conda-forge``
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  fn: {{ name }}-{{ version }}.tar.gz
+  url: https://github.com/TACC/Lmod/archive/{{version}}.tar.gz
+  sha256: {{ sha256 }}
+
+build:
+  number: 0
+  skip: True # [win]
+
+requirements:
+  build:
+    - lua
+  run:
+    - lua
+
+test:
+  # Some package might need a `test/commands` key to check CLI.
+  # List all the packages/modules that `run_test.py` imports.
+  imports:
+    - simplejson
+    - simplejson.tests
+
+about:
+  home: https://github.com/TACC/Lmod
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE.txt
+  summary: 'Lmod is a program to maange te user environment under Unix'
+
+  # The remaining entries in this section are optional, but recommended
+  description: |
+      Lmod is program to manage the user environment under Unix: (Linux, Mac OS
+      X, ...). It is a new implementation of environment modules.
+  doc_url: http://lmod.readthedocs.org/
+  dev_url: https://github.com/TACC/Lmod
+
+extra:
+  recipe-maintainers:
+    - HomerSimpson
+    - LukeSkywalker
